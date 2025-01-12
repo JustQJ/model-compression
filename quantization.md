@@ -49,7 +49,21 @@ $$
 
 2.QAT (quantization aware training)，在训练过程中量化。
 
-实际中主要以PTQ为主，因为训练代价太大。
+实际中主要以PTQ为主，因为训练代价太大。这里的只关注PTQ相关的工作。                             
+简单来说，QAT就是在训练过程中使用伪量化，即对权重先执行量化，然后再执行反量化操作（整个过程数据实际上都是float16的，没有真的变成int），再使用反量化得到的新权重和输入进行计算。由于在计算过程中引入了scaling和zero等参数，所以这些参数和模型原始权重都会被优化。但是在量化过程中会引入round或者climp之类的不可导的操作，所以需要其他技术进行递推反向传播。训练完成后使用这些参数将权重真正量化到低bit数据进行保存。
+```
+# PTQ: x_q is quantized and cast to int8
+# scale and zero point (zp) refer to parameters used to quantize x_float
+# qmin and qmax refer to the range of quantized values
+x_q = (x_float / scale + zp).round().clamp(qmin, qmax).cast(int8)
+
+# QAT: x_fq is still in float
+# Fake quantize simulates the numerics of quantize + dequantize
+x_fq = (x_float / scale + zp).round().clamp(qmin, qmax)
+x_fq = (x_fq - zp) * scale
+
+# https://pytorch.org/blog/quantization-aware-training/
+```
 
 ### 基本步骤
 1.使用量化函数对输入的tensor进行量化，将每个元素量化到intk的范围内。          
