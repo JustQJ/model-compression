@@ -24,6 +24,11 @@ $$
 
 
 ## SparseGPT
+[SparseGPT: Massive Language Models Can Be Accurately Pruned in One-Shot](https://arxiv.org/abs/2301.00774)
+非结构化剪枝。
+
+
+
 
 
 
@@ -95,3 +100,10 @@ $$
 
 使用lora进行训练恢复。
 
+
+## Sheared LLaMA
+[Sheared LLaMA: Accelerating Language Model Pre-training via Structured Pruning](https://arxiv.org/abs/2310.06694)                  
+
+
+## LoRAPrune
+[LoRAPrune: Structured Pruning Meets Low-Rank Parameter-Efficient Fine-Tuning](https://arxiv.org/abs/2305.18403)
